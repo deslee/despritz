@@ -1,3 +1,3 @@
 # Hello world!
 
-De Spritz is a blah blah blah
+Despritz is a speedreading application in development.
