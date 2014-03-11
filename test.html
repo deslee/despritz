@@ -8,10 +8,10 @@
 	}
 
 	#reticle {
-		position: absolute;
+		position: relative;
 		left: 50%;
 		color: red;
-		top: 50px;
+		top: -0px;
 	}
 
 	#test p {
@@ -20,9 +20,17 @@
 </style>
 <script data-main="scripts/app" src="scripts/lib/require.js">
 </script>
+<script>
+	require(['test'])
+</script>
 </head>
 
 <body>
+
+<button id="start">Random despritz</button>
+<button id="stop">Stop</button>
+Speed: <input id="speed" type="range" min="200" max="500" step="50", value="200"><span id="speed_number">200</span>
+
 <h1>Despritz test!</h1>
 
 <div>
@@ -55,20 +63,6 @@
 
 <p>After the Titanic sank, investigations were held in both Washington and London. In the end, both inquiries decided that no one could be blamed for the sinking. However, they did address the fundamental safety issues which had contributed to the enormous loss of life. As a result, international agreements were drawn up to improve safety procedures at sea. The new regulations covered 24 hour wireless operation, crew training, proper lifeboat drills, lifeboat capacity for all on board and the creation of an international ice patrol.</p>
 </div>
-
-
-<script>
-	require(['despritz',], function(despritz) {
-		set_word = despritz.set_word;
-		var test_div = document.getElementById('test');
-		var random_index = test_div.children.length * Math.random();
-		random_index = Math.floor(random_index);
-		
-		var random_text = test_div.children[random_index].innerHTML;
-		despritz.initialize();
-		var session = despritz.spritzify(random_text);
-	});
-</script>
 
 </body>
 

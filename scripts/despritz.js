@@ -5,7 +5,20 @@ define(['findpivot'], function(pivot) {
 
 	var options = {
 		box: document.getElementById('box'),
-		reticle: document.getElementById('reticle')
+		reticle: document.getElementById('reticle'),
+	}
+
+
+	Session = function(text) {
+		this.words = text.split(' ');
+	}
+	var current_session = {};
+
+	Session.prototype = {
+		index: 0,
+		wpm: 200,
+		next_timeout: undefined,
+		running: true,
 	}
 
 	var generate_letter_element = function(c, pivot) {
@@ -49,14 +62,17 @@ define(['findpivot'], function(pivot) {
 		set_word(word);
 		next_timeout = setTimeout(function() {
 			session.index = session.index + 1;
-			if (recurse) {
+			if (recurse && session.running) {
 				update(session);
 			}
 		}, 60000/session.wpm);
 	}
 
 	var stop = function() {
-		console.log('stopped!');
+		if (current_session !== undefined) {
+			current_session.running = false;
+			clearTimeout(current_session.next_timeout);
+		}
 	}
 
 	return {
@@ -64,15 +80,13 @@ define(['findpivot'], function(pivot) {
 			options.box.className = options.box.className + ' despritz box';
 		},
 		set_word: set_word,
-		spritzify: function(text) {
-			var session = {
-				words: text.split(' '),
-				index: 0,
-				wpm: 300,
-				next_timeout: undefined,
-			}
-			update(session);
-			return session;
+		stop: stop,
+		default_session: Session.prototype,
+		spritzify: function(session, text) {
+			stop();
+			current_session = new Session(text);
+			update(current_session);
+			return current_session;
 		},
 	};
 });
