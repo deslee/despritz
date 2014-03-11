@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<script data-main="scripts/main" src="scripts/lib/require.js">
+<script data-main="scripts/app" src="scripts/lib/require.js">
 </script>
 </head>
 
@@ -36,7 +36,7 @@
 
 
 <script>
-	require(['lib/despritz',], function(despritz) {
+	require(['despritz',], function(despritz) {
 		var test_div = document.getElementById('test');
 		var random_index = test_div.children.length * Math.random();
 		random_index = Math.floor(random_index);
