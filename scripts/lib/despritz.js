@@ -5,6 +5,7 @@ define(function() {
 
 	var options = {
 		box: document.getElementById('box'),
+		reticle: document.getElementById('reticle')
 	}
 
 	var pivot = function(word) {
@@ -55,23 +56,41 @@ define(function() {
 	var set_word = function(word) {
 		var pivot_index = pivot(word);
 		var pivot_char = word.charAt(pivot_index);
+		var pivot_elem;
 		options.box.innerHTML = '';
 		word.split('').forEach(function(character, index) {
-			options.box.appendChild(generate_letter_element(character, index == pivot_index));
+			var child = 
+				options.box.appendChild
+					(generate_letter_element(character, index == pivot_index));
+			if (index == pivot_index) {
+				pivot_elem = child;
+			}
 		});
+
+		var pivot_width = pivot_elem.offsetWidth;
+		var pivot_offset = pivot_elem.offsetLeft;
+		var span_offset = options.reticle.offsetLeft;
+		document.getElementById('box').style.left =
+			span_offset - pivot_offset - pivot_width/2 + 'px'
+
+		options.box.style.left = + 'px'
 	}
 
-	var next_timeout, ms_per_word;
-
-	var start = function(words, index) {
-		var word = words[index];
+	var update = function(session, recurse) {
+		var word = session.words[session.index];
+		if (recurse === undefined) {
+			recurse = true;
+		}
 		if (word == undefined) {
 			return stop();
 		}
 		set_word(word);
 		next_timeout = setTimeout(function() {
-			start(words, index + 1);
-		}, ms_per_word);
+			session.index = session.index + 1;
+			if (recurse) {
+				update(session);
+			}
+		}, 60000/session.wpm);
 	}
 
 	var stop = function() {
@@ -80,12 +99,18 @@ define(function() {
 
 	return {
 		initialize: function(opts) {
+			options.box.className = options.box.className + ' despritz box';
 		},
+		set_word: set_word,
 		spritzify: function(text) {
-			var words = text.split(' ');
-			var wpm = 500;
-			ms_per_word = 60000/wpm;
-			start(words, 0);
+			var session = {
+				words: text.split(' '),
+				index: 0,
+				wpm: 300,
+				next_timeout: undefined,
+			}
+			update(session);
+			return session;
 		},
 	};
 });
