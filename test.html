@@ -1,7 +1,6 @@
 <html>
 
 <head>
-<script data-main="scripts/main" src="scripts/lib/require.js"></script>
 <link rel="stylesheet" type="text/css" href="style/style.css" />
 <style type="text/css">
 	body {
@@ -19,6 +18,8 @@
 		display: none;
 	}
 </style>
+<script data-main="scripts/app" src="scripts/lib/require.js">
+</script>
 </head>
 
 <body>
@@ -57,7 +58,7 @@
 
 
 <script>
-	require(['lib/despritz',], function(despritz) {
+	require(['despritz',], function(despritz) {
 		set_word = despritz.set_word;
 		var test_div = document.getElementById('test');
 		var random_index = test_div.children.length * Math.random();
