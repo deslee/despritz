@@ -1,0 +1,54 @@
+<html>
+
+<head>
+	<style type="text/css">
+		body {
+			background: #eee;
+			color: #A33D47;
+			font-family: "Inconsolata", Andale Mono, Monaco, Monospace;
+		}
+		#text {
+			display: none;
+		}
+		#spritz {
+			margin: 0 auto;
+			text-align: center;
+			height: 300px;
+			width: 500px;
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		#reticle {
+			text-align: center;
+			display: inline-block;
+			height: 0px;
+		}
+		#box {
+			position: absolute;
+			left: 0px;
+		}
+		.pivot.letter {
+			color: red;
+		}
+	</style>
+
+	<script data-main="scripts/app" src="scripts/lib/require.js"></script>
+
+	<script>
+		require(['examples/fullscreen'])
+	</script>
+
+</head>
+
+<body>
+	<div id="spritz">
+		<span id="reticle">&nbsp;</span>
+		<div id="box"></div>
+	</div>
+	
+	<div id="text">One two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen.</div>
+
+</body>
+
+</html>

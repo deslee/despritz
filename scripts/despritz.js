@@ -56,6 +56,8 @@ define(['findpivot'], function(pivot) {
 				pivot_index = pivot(args.word),
 				pivot_char = args.word.charAt(pivot_index);
 
+			console.log(args.word);
+
 			session.elements.box.innerHTML = ''; 
 
 			args.word.split('').forEach(function(character, index) {
@@ -74,6 +76,17 @@ define(['findpivot'], function(pivot) {
 			clearTimeout(session.next_timeout);
 		},
 
+		get_pivot_letter: function() {
+			var session = this;
+			for(var i = 0; i < session.elements.box.children.length; ++i) {
+				var child = session.elements.box.children[i];
+
+				if (child.className.indexOf('pivot') != -1) {
+					return child;
+				}
+			}
+		},
+
 		override: function(name, new_function) {
 			var session = this,
 			old_function = session[name];
@@ -81,7 +94,7 @@ define(['findpivot'], function(pivot) {
 			session[name] = function(args) {
 				new_function.call(session, args, old_function);
 			}
-		}
+		},
 	};
 
 	return {
