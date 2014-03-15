@@ -44,10 +44,14 @@ define(['despritz',], function(despritz) {
 	var stop_session = function() {
 		current_session.stop();
 	}
+	var resume_session = function() {
+		current_session.start();
+	}
 
 	// control
 	document.getElementById('start').onclick=spritzify_random;
 	document.getElementById('stop').onclick=stop_session;
+	document.getElementById('resume').onclick=resume_session;
 	document.getElementById('speed').onchange=function(e) {
 		var new_wpm
 			= current_session.wpm
