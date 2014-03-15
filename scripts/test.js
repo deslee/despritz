@@ -13,7 +13,7 @@ define(['despritz',], function(despritz) {
 		for(var i = 0; i < session.elements.box.children.length; ++i) {
 			var child = session.elements.box.children[i];
 
-			if (child.className.contains('pivot')) {
+			if (child.className.indexOf('pivot') != -1) {
 				pivot_elem = child;
 				break;
 			}
