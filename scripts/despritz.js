@@ -1,92 +1,85 @@
 define(['findpivot'], function(pivot) {
-	String.prototype.replaceAt=function(index, text) {
-    	return this.substr(0, index) + text + this.substr(index+1);
-	}
-
-	var options = {
-		box: document.getElementById('box'),
-		reticle: document.getElementById('reticle'),
-	}
-
-
-	Session = function(text) {
-		this.words = text.split(' ');
-	}
-	var current_session = {};
+	Session = function() {
+		var self = this;
+		self.set_text = function(t) {
+			self.words = t.split(' ');
+		};
+	};
 
 	Session.prototype = {
 		index: 0,
 		wpm: 200,
 		next_timeout: undefined,
+		words: undefined,
 		running: true,
-	}
 
-	var generate_letter_element = function(c, pivot) {
-		var letter = document.createElement('span');
-		letter.className = pivot ? 'pivot' : 'letter';
-		letter.innerHTML = c;
-		return letter
-	}
+		update: function() {
+			var session = this,
+			word = session.words[session.index];
 
-	var set_word = function(word) {
-		var pivot_index = pivot(word);
-		var pivot_char = word.charAt(pivot_index);
-		var pivot_elem;
-		options.box.innerHTML = '';
-		word.split('').forEach(function(character, index) {
-			var child = 
-				options.box.appendChild
-					(generate_letter_element(character, index == pivot_index));
-			if (index == pivot_index) {
-				pivot_elem = child;
+			if (word == undefined) {
+				return stop();
 			}
-		});
 
-		var pivot_width = pivot_elem.offsetWidth;
-		var pivot_offset = pivot_elem.offsetLeft;
-		var span_offset = options.reticle.offsetLeft;
-		document.getElementById('box').style.left =
-			span_offset - pivot_offset - pivot_width/2 + 'px'
+			session.set_word(word);
 
-		options.box.style.left = + 'px'
-	}
+			next_timeout = setTimeout(function() {
+				session.index = session.index + 1;
+				if (session.running) {
+					session.update();
+				}
+			}, 60000/session.wpm);
+		},
 
-	var update = function(session, recurse) {
-		var word = session.words[session.index];
-		if (recurse === undefined) {
-			recurse = true;
-		}
-		if (word == undefined) {
-			return stop();
-		}
-		set_word(word);
-		next_timeout = setTimeout(function() {
-			session.index = session.index + 1;
-			if (recurse && session.running) {
-				update(session);
-			}
-		}, 60000/session.wpm);
-	}
+		start: function() {
+			this.update();
+		},
 
-	var stop = function() {
-		if (current_session !== undefined) {
-			current_session.running = false;
-			clearTimeout(current_session.next_timeout);
-		}
-	}
+		elements: {
+			box: document.getElementById('box'),
+			reticle: document.getElementById('reticle'),
+		}, 
+
+		generate_letter_element: function(c, pivot) {
+			var letter = document.createElement('span');
+			letter.className = pivot ? 'pivot letter' : 'letter';
+			letter.innerHTML = c;
+			return letter
+		},
+
+		set_word: function(word) {
+			var pivot_index = pivot(word),
+			session = this,
+			pivot_char = word.charAt(pivot_index);
+
+			session.elements.box.innerHTML = ''; // clear the box
+
+			word.split('').forEach(function(character, index) {
+				var child = session.generate_letter_element(character, 
+						index == pivot_index);
+
+				session.elements.box.appendChild(child);
+			});
+		},
+
+		stop: function() {
+			var session = this;
+			session.running = false;
+			clearTimeout(session.next_timeout);
+			console.log("SESSION STOPPED")
+		},
+
+
+	};
+
+	var can_override = ['set_word', 'generate_letter_element'];
 
 	return {
-		initialize: function(opts) {
-			options.box.className = options.box.className + ' despritz box';
-		},
-		set_word: set_word,
-		stop: stop,
-		default_session: Session.prototype,
-		spritzify: function(session, text) {
-			stop();
-			current_session = new Session(text);
-			update(current_session);
-			return current_session;
-		},
+		/* Client calls this to begin a session on a specified text. */
+		init_session: function() {
+			session = new Session();
+			return session;
+		}
 	};
+
 });
