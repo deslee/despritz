@@ -14,6 +14,10 @@ define(['findpivot'], function(pivot) {
 		words: undefined,
 		running: true,
 
+		elements: {
+			box: document.getElementById('box'),
+		}, 
+
 		update: function() {
 			var session = this,
 			word = session.words[session.index];
@@ -23,8 +27,6 @@ define(['findpivot'], function(pivot) {
 			}
 
 			session.set_word({word:word});
-
-			console.log(session.running);
 
 			session.next_timeout = setTimeout(function() {
 				session.index = session.index + 1;
@@ -42,10 +44,6 @@ define(['findpivot'], function(pivot) {
 			this.update();
 		},
 
-		elements: {
-			box: document.getElementById('box'),
-		}, 
-
 		generate_letter_element: function(args) {
 			var letter = document.createElement('span');
 			letter.className = args.is_pivot ? 'pivot letter' : 'letter';
@@ -54,12 +52,11 @@ define(['findpivot'], function(pivot) {
 		},
 
 		set_word: function(args) {
-			console.log(this);
 			var session = this,
 				pivot_index = pivot(args.word),
 				pivot_char = args.word.charAt(pivot_index);
 
-			session.elements.box.innerHTML = ''; // clear the box
+			session.elements.box.innerHTML = ''; 
 
 			args.word.split('').forEach(function(character, index) {
 				var child = session.generate_letter_element({
@@ -75,14 +72,12 @@ define(['findpivot'], function(pivot) {
 			var session = this;
 			session.running = false;
 			clearTimeout(session.next_timeout);
-			console.log("SESSION STOPPED")
 		},
 
 		override: function(name, new_function) {
-			console.log(this);
+			var session = this,
+			old_function = session[name];
 
-			var session = this
-			old_function = session[name]
 			session[name] = function(args) {
 				new_function.call(session, args, old_function);
 			}

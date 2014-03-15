@@ -1,49 +1,54 @@
 <html>
 
 <head>
-<link rel="stylesheet" type="text/css" href="style/style.css" />
-<style type="text/css">
-	body {
+	<link rel="stylesheet" type="text/css" href="style/style.css" />
+	<style type="text/css">
+		#reticle {
+			position: relative;
+			left: 50%;
+			color: red;
+			top: 0px;
+		}
 
-	}
+		#test p {
+			display: none;
+		}
 
-	#reticle {
-		position: relative;
-		left: 50%;
-		color: red;
-		top: 0px;
-	}
+		#box {
+			text-align: center;
+			font-size: 3em;
+			position: absolute;
+			font-family: "Inconsolata", Andale Mono, Monaco, Monospace;
+		}
+	</style>
 
-	#test p {
-		display: none;
-	}
+	<script data-main="scripts/app" src="scripts/lib/require.js">
+	</script>
 
-</style>
-<script data-main="scripts/app" src="scripts/lib/require.js">
-</script>
-<script>
-	require(['test'])
-</script>
+	<script>
+		require(['test'])
+	</script>
+
 </head>
 
 <body>
 
-<button id="start">Random despritz</button>
-<button id="stop">Stop</button>
-Speed: <input id="speed" type="range" min="200" max="500" step="50", value="200"><span id="speed_number">200</span>
+	<button id="start">Random despritz</button>
+	<button id="stop">Stop</button>
+	Speed: <input id="speed" type="range" min="200" max="500" step="50", value="200"><span id="speed_number">200</span>
 
-<h1>Despritz test!</h1>
+	<h1>Despritz test!</h1>
 
-<div>
-	<div id="reticle">|</div>
-</div>
+	<div>
+		<div id="reticle">|</div>
+	</div>
 
-<span id="box">
-</span>
+	<span id="box">
+	</span>
 
-<div id="test">
-<p>One two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen.</p>
-</div>
+	<div id="test">
+	<p>One two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen.</p>
+	</div>
 
 </body>
 
