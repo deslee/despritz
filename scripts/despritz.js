@@ -3,6 +3,7 @@ define(['findpivot'], function(pivot) {
 		var self = this;
 		self.set_text = function(t) {
 			self.words = t.split(' ');
+			self.index = 0;
 		};
 	};
 
@@ -21,9 +22,11 @@ define(['findpivot'], function(pivot) {
 				return stop();
 			}
 
-			session.set_word(word);
+			session.set_word({word:word});
 
-			next_timeout = setTimeout(function() {
+			console.log(session.running);
+
+			session.next_timeout = setTimeout(function() {
 				session.index = session.index + 1;
 				if (session.running) {
 					session.update();
@@ -31,32 +34,38 @@ define(['findpivot'], function(pivot) {
 			}, 60000/session.wpm);
 		},
 
+		/* begins a new session or resumes the current one */
 		start: function() {
+			this.stop();
+
+			this.running = true;
 			this.update();
 		},
 
 		elements: {
 			box: document.getElementById('box'),
-			reticle: document.getElementById('reticle'),
 		}, 
 
-		generate_letter_element: function(c, pivot) {
+		generate_letter_element: function(args) {
 			var letter = document.createElement('span');
-			letter.className = pivot ? 'pivot letter' : 'letter';
-			letter.innerHTML = c;
+			letter.className = args.is_pivot ? 'pivot letter' : 'letter';
+			letter.innerHTML = args.character;
 			return letter
 		},
 
-		set_word: function(word) {
-			var pivot_index = pivot(word),
-			session = this,
-			pivot_char = word.charAt(pivot_index);
+		set_word: function(args) {
+			console.log(this);
+			var session = this,
+				pivot_index = pivot(args.word),
+				pivot_char = args.word.charAt(pivot_index);
 
 			session.elements.box.innerHTML = ''; // clear the box
 
-			word.split('').forEach(function(character, index) {
-				var child = session.generate_letter_element(character, 
-						index == pivot_index);
+			args.word.split('').forEach(function(character, index) {
+				var child = session.generate_letter_element({
+					character: character, 
+					is_pivot: index == pivot_index
+				});
 
 				session.elements.box.appendChild(child);
 			});
@@ -69,10 +78,16 @@ define(['findpivot'], function(pivot) {
 			console.log("SESSION STOPPED")
 		},
 
+		override: function(name, new_function) {
+			console.log(this);
 
+			var session = this
+			old_function = session[name]
+			session[name] = function(args) {
+				new_function.call(session, args, old_function);
+			}
+		}
 	};
-
-	var can_override = ['set_word', 'generate_letter_element'];
 
 	return {
 		/* Client calls this to begin a session on a specified text. */
