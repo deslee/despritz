@@ -23,7 +23,7 @@ define(['findpivot'], function(pivot) {
 			word = session.words[session.index];
 
 			if (word == undefined) {
-				return stop();
+				return session.stop();
 			}
 
 			session.set_word({word:word});

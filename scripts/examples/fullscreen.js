@@ -5,6 +5,7 @@ define(['despritz'], function(despritz) {
 		after = document.getElementById('after'),
 		seeker = document.getElementById('seeker');
 
+	s = session;
 	document.getElementById('start').onclick = function(e) {
 		e.preventDefault();
 		session.start();
