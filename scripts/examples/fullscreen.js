@@ -30,9 +30,14 @@ define(['despritz'], function(despritz) {
 	});
 
 	seeker.onchange = function(e) {
-		session.index = parseInt(e.target.value);
-		session.start();
+		session.set_index(e.target.value);
 	}
+
+	document.getElementById('speed').onchange=function(e) {
+		session.wpm 
+			= document.getElementById('speed_number').innerHTML
+			= e.target.value;
+	};
 
 	session.elements.box = document.getElementById('box');
 

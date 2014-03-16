@@ -29,7 +29,7 @@ define(['findpivot'], function(pivot) {
 			session.set_word({word:word});
 
 			session.next_timeout = setTimeout(function() {
-				session.index = session.index + 1;
+				session.index = parseInt(session.index) + 1;
 				if (session.running) {
 					session.update();
 				}
@@ -103,6 +103,14 @@ define(['findpivot'], function(pivot) {
 				new_function.call(session, args, old_function);
 			}
 		},
+
+		set_index: function(index) {
+			var session = this;
+			session.index = index;
+			if (!session.running) {
+				session.update();
+			}
+		}
 	};
 
 	return {
