@@ -12,7 +12,7 @@ define(['findpivot'], function(pivot) {
 		wpm: 200,
 		next_timeout: undefined,
 		words: undefined,
-		running: true,
+		running: false,
 
 		elements: {
 			box: document.getElementById('box'),
@@ -38,8 +38,8 @@ define(['findpivot'], function(pivot) {
 
 		/* begins a new session or resumes the current one */
 		start: function() {
+			if (this.running) return;
 			this.stop();
-
 			this.running = true;
 			this.update();
 		},
@@ -55,8 +55,6 @@ define(['findpivot'], function(pivot) {
 			var session = this,
 				pivot_index = pivot(args.word),
 				pivot_char = args.word.charAt(pivot_index);
-
-			console.log(args.word);
 
 			session.elements.box.innerHTML = ''; 
 
@@ -85,6 +83,16 @@ define(['findpivot'], function(pivot) {
 					return child;
 				}
 			}
+		},
+
+		get_text_before: function() {
+			var session = this;
+			return session.words.slice(0, session.index).join(' ');
+		},
+
+		get_text_after: function() {
+			var session = this;
+			return session.words.slice(session.index+1).join(' ');
 		},
 
 		override: function(name, new_function) {

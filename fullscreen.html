@@ -1,11 +1,17 @@
 <html>
 
 <head>
+	<link rel="stylesheet" type="text/css" href="style/jquery.mobile.custom.theme.css" />
+	<link rel="stylesheet" type="text/css" href="style/jquery.mobile.custom.structure.css" />
 	<style type="text/css">
+		html {
+			height: 100%;
+		}
 		body {
 			background: #eee;
 			color: #A33D47;
 			font-family: "Inconsolata", Andale Mono, Monaco, Monospace;
+			height: 100%;
 		}
 		#text {
 			display: none;
@@ -13,20 +19,43 @@
 		#spritz {
 			margin: 0 auto;
 			text-align: center;
-			height: 300px;
-			width: 500px;
 			position: relative;
-			top: 50%;
-			transform: translateY(-50%);
 		}
 		#reticle {
 			text-align: center;
 			display: inline-block;
 			height: 0px;
 		}
+		#current {
+			height: 10%;
+		}
 		#box {
-			position: absolute;
+			position: relative;
 			left: 0px;
+			top: 50%;
+			transform: 			translateY(-50%);
+		}
+		.gui-before, .gui-after {
+			height:40%;
+			display: table;
+			width: 100%;
+		}
+
+		.gui-control {
+		}
+
+		#before, #after {
+			display: table-cell;
+			color: #aaa;
+		}
+		#before {
+			vertical-align: bottom;
+		}
+		#after {
+			vertical-align: top;
+		}
+		#seeker {
+			width: 100%;
 		}
 		.pivot.letter {
 			color: red;
@@ -34,7 +63,6 @@
 	</style>
 
 	<script data-main="scripts/app" src="scripts/lib/require.js"></script>
-
 	<script>
 		require(['examples/fullscreen'])
 	</script>
@@ -44,7 +72,21 @@
 <body>
 	<div id="spritz">
 		<span id="reticle">&nbsp;</span>
-		<div id="box"></div>
+		<div class="gui-before">
+			<div id="before"></div>
+		</div>
+		<div class="gui-current">
+			<span id="box">&nbsp;</span>
+		</div>
+		<form class="gui-control">
+			<input id="seeker" data-role="slider" name="seeker" type="range" data-highlight="true" min="0" max="100" value="0"></input>
+			<div>
+				<button id="start">start</button><button id="stop">pause</button>
+			</div>
+		</form>
+		<div class="gui-after">
+			<div id="after"></div>
+		</div>
 	</div>
 	
 	<div id="text">One two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen.</div>

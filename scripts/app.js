@@ -1,5 +1,6 @@
 requirejs.config({
 	'paths': {
-		'jquery': 'http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min'
+		'jquery': 'http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min',
+		'jquerymobile': 'lib/jquery.mobile.custom',
 	}
 });
