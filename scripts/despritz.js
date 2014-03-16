@@ -92,7 +92,7 @@ define(['findpivot'], function(pivot) {
 
 		get_text_after: function() {
 			var session = this;
-			return session.words.slice(session.index+1).join(' ');
+			return session.words.slice(parseInt(session.index)+1).join(' ');
 		},
 
 		override: function(name, new_function) {
