@@ -44,5 +44,32 @@ define(['despritz'], function(despritz) {
 
 	session.set_text(document.getElementById('text').innerHTML)
 	seeker.max = session.words.length;
-	session.start();
+	session.update();
+
+	var body = document.getElementsByTagName('body')[0],
+	killEvents = function(evt) {
+		evt.stopPropagation();
+		evt.preventDefault();
+	}, fileSelect = document.getElementById('file');
+
+	['draginit','dragstart','dragover','dragleave','dragenter','dragend','drag','drop'].forEach(function(e){
+  		body.addEventListener(e, killEvents);
+  	})
+
+  	body.addEventListener('dragenter', function(e) {
+  	}, false);
+
+  	body.addEventListener('drop', function(e) {
+  		var file = e.dataTransfer.files[0],
+  		reader = new FileReader();
+
+  		var text = reader.readAsText(file);
+  		reader.onloadend = function(e) {
+  			var text = e.target.result;
+  			session.set_text(text);
+  			session.set_index(0);
+  			session.start();
+  		}
+  	}, false);
+
 });

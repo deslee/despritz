@@ -4,14 +4,13 @@
 	<link rel="stylesheet" type="text/css" href="style/jquery.mobile.custom.theme.css" />
 	<link rel="stylesheet" type="text/css" href="style/jquery.mobile.custom.structure.css" />
 	<style type="text/css">
-		html {
+		html, body {
 			height: 100%;
 		}
 		body {
 			background: #eee;
 			color: #A33D47;
 			font-family: "Inconsolata", Andale Mono, Monaco, Monospace;
-			height: 100%;
 		}
 		#text {
 			display: none;
@@ -83,7 +82,7 @@
 		<form class="gui-control">
 			<input id="seeker" data-role="slider" name="seeker" type="range" data-highlight="true" min="0" max="100" value="0"></input>
 			<div>
-				<button id="start">start</button><button id="stop">pause</button>
+				<button id="start">start</button><button id="stop">pause</button> <input type="file" id="file" />
 			</div>
 			<div>
 			Speed:
